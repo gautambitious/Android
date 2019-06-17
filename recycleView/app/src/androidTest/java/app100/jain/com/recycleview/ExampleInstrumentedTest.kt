@@ -1,4 +1,4 @@
-package app100.jain.com.sharedpreferences
+package app100.jain.com.recycleview
 
 import androidx.test.InstrumentationRegistry
 import androidx.test.runner.AndroidJUnit4
@@ -19,6 +19,6 @@ class ExampleInstrumentedTest {
     fun useAppContext() {
         // Context of the app under test.
         val appContext = InstrumentationRegistry.getTargetContext()
-        assertEquals("app100.jain.com.sharedpreferences", appContext.packageName)
+        assertEquals("app100.jain.com.recycleview", appContext.packageName)
     }
 }
