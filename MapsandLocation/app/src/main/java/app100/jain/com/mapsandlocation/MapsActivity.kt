@@ -1,9 +1,15 @@
 package app100.jain.com.mapsandlocation
 
+import android.annotation.SuppressLint
+import android.content.Context
 import android.content.pm.PackageManager
 import android.graphics.Color
+import android.location.Location
+import android.location.LocationListener
+import android.location.LocationManager
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.widget.Toast
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 
@@ -15,24 +21,42 @@ import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.MarkerOptions
 import com.google.android.gms.maps.model.PolylineOptions
 
-class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
+class MapsActivity : AppCompatActivity(), OnMapReadyCallback, LocationListener{
+    lateinit var locMan: LocationManager
+    lateinit var locLis: LocationListener
+
+    override fun onLocationChanged(location: Location?) {
+        Toast.makeText(this,"Longitude= ${location.longitude} Lattitude= ${location.latitude}",Toast.LENGTH_SHORT)
+    }
+
+    override fun onStatusChanged(provider: String?, status: Int, extras: Bundle?) {
+        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+    }
+
+    override fun onProviderEnabled(provider: String?) {
+        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+    }
+
+    override fun onProviderDisabled(provider: String?) {
+        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+    }
 
     private lateinit var mMap: GoogleMap
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_maps)
-
+        locLis=this
 
         // Obtain the SupportMapFragment and get notified when the map is ready to be used.
         val mapFragment = supportFragmentManager
             .findFragmentById(R.id.map) as SupportMapFragment
         mapFragment.getMapAsync(this)
 
-        location()
+        loc()
     }
 
-    private fun location() {
+    private fun loc() {
         if(ActivityCompat.checkSelfPermission(this,android.Manifest.permission.READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED)
         {
             ActivityCompat.requestPermissions(this, arrayOf(android.Manifest.permission.READ_EXTERNAL_STORAGE
@@ -42,8 +66,11 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
             startLocationUpdates()
         }
     }
-
+    @SuppressLint("MissingPermission")
     private fun startLocationUpdates() {
+        locMan=getSystemService(Context.LOCATION_SERVICE) as LocationManager
+
+        locMan.requestLocationUpdates(LocationManager.NETWORK_PROVIDER,1000,0f)
             }
 
     override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<out String>, grantResults: IntArray) {
@@ -51,7 +78,10 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
 
         if (requestCode==1234){
             if (grantResults[0]==PackageManager.PERMISSION_DENIED){
-                location()
+                loc()
+            }
+            else{
+
             }
         }
     }
@@ -83,4 +113,8 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
 
     }
 
+    override fun onDestroy() {
+        super.onDestroy()
+        locMan.removeUpdates(this)
+    }
 }
