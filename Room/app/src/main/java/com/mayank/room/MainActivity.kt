@@ -3,6 +3,7 @@ package com.mayank.room
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.ArrayAdapter
+import androidx.lifecycle.Observer
 import androidx.room.Room
 import kotlinx.android.synthetic.main.activity_main.*
 
@@ -20,8 +21,32 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-        list=db.todoDao().getAllTask() as ArrayList<Todo>
-        val adapter=ArrayAdapter(this,)
-        listView.adapter=adapter
+        val adapter = TaskAdapter(list)
+        db.todoDao().getAllTask().observe(this, Observer {
+            list=it as ArrayList<Todo>
+            adapter.updateTasks(list)
+        })
+
+        listView.adapter = adapter
+        adapter.listItemClickListener = object : ListItemClickListener {
+            override fun lisitemClick(task: Todo, position: Int) {
+
+                db.todoDao().deleteTask(task)
+//                list = db.todoDao().getAllTask() as ArrayList<Todo>
+//                adapter.updateTasks(list)
+            }
+
+        }
+
+        button.setOnClickListener {
+            db.todoDao().insertRow(
+                Todo(
+                    task = textView.text.toString(),
+                    status = false
+                )
+            )
+//            list = db.todoDao().getAllTask() as ArrayList<Todo>
+//            adapter.updateTasks(list)
+        }
     }
 }

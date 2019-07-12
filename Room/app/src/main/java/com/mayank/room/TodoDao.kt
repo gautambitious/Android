@@ -1,5 +1,6 @@
 package com.mayank.room
 
+import androidx.lifecycle.LiveData
 import androidx.room.Dao
 import androidx.room.Delete
 import androidx.room.Insert
@@ -15,7 +16,7 @@ interface TodoDao {
     fun insertMultiple(tasklist:ArrayList<Todo>)
 
     @Query("Select * FROM Todo")
-    fun getAllTask() : List<Todo>
+    fun getAllTask() : LiveData<List<Todo>>
 
     @Query("Select * FROM Todo Where status = :done")
     fun getAllDoneTask(done:Boolean) : List<Todo>
