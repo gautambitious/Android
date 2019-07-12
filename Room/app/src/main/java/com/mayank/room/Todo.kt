@@ -5,7 +5,7 @@ import androidx.room.Entity
 import androidx.room.PrimaryKey
 
 @Entity                         //this makes a table whose parameters are the below mentioned
-data class Task(
+data class Todo(
     @PrimaryKey(autoGenerate = true)
     val id:Long? = null,
   //  @ColumnInfo(name = "Description") // it changes the name of the column in the SQL and is used when to see the row database  and for queries

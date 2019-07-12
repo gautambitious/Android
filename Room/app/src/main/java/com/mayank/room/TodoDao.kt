@@ -9,17 +9,17 @@ import androidx.room.Query
 interface TodoDao {
 // why we use interface- think
     @Insert
-    fun insertRow(task:Task)
+    fun insertRow(task:Todo)
 
     @Insert
-    fun insertMultiple(tasklist:ArrayList<Task>)
+    fun insertMultiple(tasklist:ArrayList<Todo>)
 
-    @Query("Select * FROM Task")
-    fun getAllTask() : List<Task>
+    @Query("Select * FROM Todo")
+    fun getAllTask() : List<Todo>
 
-    @Query("Select * FROM Task Where status = :done")
-    fun getAllDoneTask(done:Boolean) : List<Task>
+    @Query("Select * FROM Todo Where status = :done")
+    fun getAllDoneTask(done:Boolean) : List<Todo>
 
     @Delete
-    fun deleteTask(task : Task)
+    fun deleteTask(task : Todo)
 }
