@@ -2,6 +2,7 @@ package com.gautam.filere_write
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.os.Environment
 import android.util.Log
 import kotlinx.android.synthetic.main.activity_main.*
 import java.io.File
@@ -12,7 +13,9 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
         Log.i("bro","Files dr ${filesDir.path}")
-        val file=File(filesDir,"myfile.text")
+        val file=File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS),"nice_file.text")
+//        val file=File(getExternalFilesDir(Environment.getDataDirectory().absolutePath),"newfile.text")
+//        val file=File(filesDir,"myfile.text")
         btn.setOnClickListener {
 //            file.writeText(editText.text.toString())
             file.appendText(editText.text.toString())
