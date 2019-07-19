@@ -1,10 +1,12 @@
 package com.gautam.camerause
 
 import android.content.pm.PackageManager
+import android.opengl.Matrix
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Rational
 import android.util.Size
+import android.view.Surface
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.camera.core.*
@@ -69,6 +71,21 @@ class MainActivity : AppCompatActivity(), LifecycleOwner {
     }
 
     private fun updatePreview() {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+        val matrix=android.graphics.Matrix()
+
+        val centerX=textureView.width/2f
+        val centerY=textureView.height/2f
+
+        val rotaion=when(textureView.display.rotation){
+            Surface.ROTATION_0 -> 0
+            Surface.ROTATION_90 -> 90
+            Surface.ROTATION_180 -> 180
+            Surface.ROTATION_270 -> 270
+            else -> return
+        }
+
+        matrix.postRotate(-rotaion.toFloat(),centerX,centerY)
+
+        textureView.setTransform(matrix)
     }
 }
