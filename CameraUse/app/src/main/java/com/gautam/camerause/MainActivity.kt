@@ -6,12 +6,12 @@ import android.os.Bundle
 import android.util.Rational
 import android.util.Size
 import android.view.ViewGroup
-import androidx.camera.core.CameraX
-import androidx.camera.core.Preview
-import androidx.camera.core.PreviewConfig
+import android.widget.Toast
+import androidx.camera.core.*
 import androidx.core.app.ActivityCompat
 import androidx.lifecycle.LifecycleOwner
 import kotlinx.android.synthetic.main.activity_main.*
+import java.io.File
 
 class MainActivity : AppCompatActivity(), LifecycleOwner {
 
@@ -29,18 +29,46 @@ class MainActivity : AppCompatActivity(), LifecycleOwner {
     }
 
     private fun startCamera() {
+        // to capture image on button click
+        val imageCaptureConfig=ImageCaptureConfig.Builder().apply {
+            setTargetAspectRatio(Rational(1,1))
+            setCaptureMode(ImageCapture.CaptureMode.MIN_LATENCY)
+        }.build()
+        val imageCapture=ImageCapture(imageCaptureConfig)
+        imageButton.setOnClickListener{
+            val file=File(externalMediaDirs.first(),"${System.currentTimeMillis()}.jpg")
+            imageCapture.takePicture(file,object : ImageCapture.OnImageSavedListener{
+                override fun onImageSaved(file: File) {
+                    Toast.makeText(this@MainActivity,"Picture Captured at ${file.path}",Toast.LENGTH_LONG).show()
+                }
+
+                override fun onError(useCaseError: ImageCapture.UseCaseError, message: String, cause: Throwable?) {
+                    Toast.makeText(this@MainActivity,"Error Capturing Picture",Toast.LENGTH_LONG).show()
+                }
+
+            })
+        }
+
+
+
+        //To get the preview of the camera
         val previousConfig=PreviewConfig.Builder().apply {
             setTargetAspectRatio(Rational(1,1))
             setTargetResolution(Size(1080,1080))
+            setLensFacing(CameraX.LensFacing.BACK)
         }.build()
         val preView=Preview(previousConfig)
         preView.setOnPreviewOutputUpdateListener {
             val parent=textureView.parent as ViewGroup
             parent.removeView(textureView)
             parent.addView(textureView,0)
-
+            updatePreview()
             textureView.surfaceTexture=it.surfaceTexture
         }
-        CameraX.bindToLifecycle(this,preView)
+        CameraX.bindToLifecycle(this,preView,imageCapture)
+    }
+
+    private fun updatePreview() {
+        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
     }
 }
