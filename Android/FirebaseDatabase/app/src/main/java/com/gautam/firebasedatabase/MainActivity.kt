@@ -12,6 +12,7 @@ val db by lazy{
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
+        val ref=db.child("messages/user1")
         db.child("messages")
             .child("user1")
             .addChildEventListener(object : ChildEventListener {
@@ -48,6 +49,15 @@ val db by lazy{
 //                }
 //
 //            })
+        button.setOnClickListener {
+            val todo = Todo()
+            todo.text = editText.text.toString()
+            todo.time = System.currentTimeMillis().toString()
+            val key = ref.push().key
+            ref.child(key!!).setValue(todo)
+            editText.setText("")
+
+        }
     }
 }
 class Todo{
