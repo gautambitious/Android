@@ -15,7 +15,7 @@ class NotificationWorker(val context:Context,workParams: WorkerParameters) : Wor
             setContentTitle("Background Task")
             setContentText("Simple Notification")
             setSmallIcon(R.drawable.ic_launcher_foreground)
-            priority=NotificationCompat.PRIORITY_DEFAULT
+            priority=NotificationManager.IMPORTANCE_MAX
         }.build()
         nm.notify(System.currentTimeMillis().toInt(),notification)
         return Result.success()
