@@ -37,6 +37,8 @@ class MainActivity : AppCompatActivity() {
         val email = SendGridAsyncTask()
         try {
             email.execute(params)
+            Toast.makeText(applicationContext, "Sending mail...", Toast.LENGTH_SHORT).show()
+
         } catch (e: Exception) {
             e.printStackTrace()
         }
