@@ -3,8 +3,10 @@ package com.gautam.gmailapi
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
+import android.widget.TextView
 import kotlinx.android.synthetic.main.activity_main.*
 import java.lang.Exception
+import java.util.*
 
 class MainActivity : AppCompatActivity() {
 
@@ -12,19 +14,18 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
+        button1.setOnClickListener {
+            Log.i("SendMailActivity", "Send Button Clicked.")
 
-        send.setOnClickListener{
-
-                try {
-                    val sender =GMailSender("bennettdigitalcourierdesk@gmail.com", "niggerfuck")
-                    sender.sendMail("This is Subject",
-                        "This is Body",
-                        "bennettdigitalcourierdesk@gmail.com",
-                        "mvgt.gautam@gmail.com")
-                    Log.e("workk","damnn shit works")
-                } catch (e: Exception) {
-                    Log.e("workk", e.toString())
-                }
+            val fromEmail = editText1.text.toString()
+            val fromPassword = editText2.text.toString()
+            val toEmails =editText3.text.toString()
+            val toEmailList = listOf(toEmails.split("\\s*,\\s*"))
+            Log.i("SendMailActivity", "To List: $toEmailList")
+            val emailSubject = editText4.text.toString()
+            val emailBody =editText5.text.toString()
+            SendMailTask(this).execute(fromEmail,
+                fromPassword, toEmailList, emailSubject, emailBody)
         }
 
     }
