@@ -11,10 +11,7 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        SwipeLayout.setOnRefreshListener {
-            textView.text = "Nigga gay"
-            SwipeLayout.isRefreshing = false
-        }
+
 
     }
 }
