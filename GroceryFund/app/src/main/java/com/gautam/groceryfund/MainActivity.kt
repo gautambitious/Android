@@ -4,6 +4,7 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import com.google.firebase.firestore.FirebaseFirestore
 import kotlinx.android.synthetic.main.activity_main.*
+import org.jetbrains.anko.*
 
 
 class MainActivity : AppCompatActivity() {
@@ -15,10 +16,24 @@ class MainActivity : AppCompatActivity() {
         setContentView(R.layout.activity_main)
         refreshBalance()
 
+
+        creditText.setOnClickListener {
+            startActivity<UpdateActivity>("method" to true)
+        }
+
+        debitText.setOnClickListener {
+            startActivity<UpdateActivity>("method" to false)
+        }
+
     }
 
     override fun onPause() {
         super.onPause()
+        refreshBalance()
+    }
+
+    override fun onResume() {
+        super.onResume()
         refreshBalance()
     }
 
